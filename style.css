@@ -60,7 +60,7 @@ h1 {color: #fff; text-align: center;}
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
     margin: 2rem 0;
-    gap: 2px;
+    gap: 1px;
 }
 .easy{ display: -ms-grid; display: grid; grid-template-columns: repeat(9, 1fr); grid-template-rows: repeat(9, 1fr);  margin: 2rem 0; gap: 2px;}
 
@@ -72,7 +72,7 @@ h1 {color: #fff; text-align: center;}
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    
+
     cursor: pointer;
     
     -webkit-box-pack: center;

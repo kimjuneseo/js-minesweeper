@@ -1,60 +1,54 @@
 const level = document.querySelectorAll(".level>button");
 const gameBoard = document.querySelector('.gameBoard');
-const easy = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-];
-const normal = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-]
-const hard = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-]
+const timer = document.querySelector('.timer');
+const reset = document.querySelector('.reset');
 
-const mine = [];
+let mine = [];
+let timerSed = 0;
+let sec = 0;
+let stoptime = true;
+let firstClick = true;
 
-const levelChange = (levels) => {
+const startTimer = () => {
+    if (stoptime == true) {
+        stoptime = false;
+        timerCycle();
+    };
+};
+
+const resetTimer = () => {
+    stoptime = true;
+    timer.innerHTML = '0';
+};
+
+const timerCycle = () => {
+    if (stoptime == false ) {
+        sec = sec + 1;
+        timer.innerHTML = sec;
+        let timerSetTime = setTimeout("timerCycle()", 1000);
+        if(stoptime){
+            sec = 0
+            clearInterval(timerSetTime);
+        }
+    };
+};
+
+const mineMaker = (level) => {
+    mine = [];
+    firstClick = true;
+    for (let i = 0; i < level; i++) {
+        mine.push([]);
+        for (let j = 0; j < level; j++) {
+            const isMine = Math.floor(Math.random() * 2 + 1);
+
+            mine[i].push(isMine === 1 ? 1 : 0);
+        };
+    };
+};
+
+const levelChange = () => {
     gameBoard.innerHTML = '';
-    levels.forEach((e, idx) => {
+    mine.forEach((e, idx) => {
         e.forEach(() => {
             gameBoard.innerHTML += `
                     <div class="tile" data-num>
@@ -62,34 +56,58 @@ const levelChange = (levels) => {
                     </div>`;
         });
     });
-}
+};
+
 
 const listener = (e) => {
     switch (e.target.innerText) {
         case "easy":
-            levelChange(easy);
             gameBoard.style.gridTemplateColumns = "repeat(10, 1fr)";
+            mineMaker(10);
+            levelChange();
+            console.log(mine);
             break;
         case "normal":
-            levelChange(normal);
+
+            mineMaker(15);
+            levelChange();
             gameBoard.style.gridTemplateColumns = "repeat(15, 1fr)";
             break;
         case "hard":
-            levelChange(hard);
+
+            mineMaker(20);
+            levelChange();
             gameBoard.style.gridTemplateColumns = "repeat(20, 1fr)";
             break;
 
-    }
-}
+    };
+};
+
+reset.addEventListener('click', resetTimer);
 
 level.forEach((levels) => {
-    levels.addEventListener("click", listener)
-})
+    levels.addEventListener("click", listener);
+});
 
 gameBoard.addEventListener('click', (e) => {
-    e.target.classList.add('click')
-})
-console.log(gameBoard.children);
+    if (firstClick) {
+        startTimer();
+        firstClick = false;
+    };
+    e.target.classList.add('click');
+});
+
+gameBoard.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    e.target.classList.toggle('flag');
+});
+
+
+
+
+
+
+
 
 // const evt = new App()
 // class App{
