@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moongci - minesweeper</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="./js/app.js" defer></script>
+</head>
+<body>
+    <section class="container">
+        <h1>minesweeper</h1>
+        <div class="menu">
+            <div class="timer">60</div>
+            <button class="reset">Reset</button>
+        </div>
+        <div class="level">
+            <!--
+                easy : 10x10
+                normal : 15x15
+                hard : 20x20
+                .gameBoard에 gird 값으로 조정
+            -->
+            <button>easy</button>
+            <button>normal</button>
+            <button>hard</button>
+        </div>
+        <div class="gameBoard">
+            <div class="tile click">
+                <p class="txt0"></p>
+            </div>
+            <div class="tile click">
+                <p class="txt1">1</p>
+            </div>
+            <div class="tile click">
+                <p class="txt2">2</p>
+            </div>
+            <div class="tile click">
+                <p class="txt3">3</p>
+            </div>
+            <div class="tile click">
+                <p class="txt_mine"><img src="images/mine.svg" alt="지뢰"></p>
+            </div>
+            <div class="tile flag">
+                <p class="txt0"></p>
+            </div>
+            <div class="tile">
+                <p class="txt0"></p>
+            </div>
+            <div class="tile">
+                <p class="txt0"></p>
+            </div>
+            <div class="tile">
+                <p class="txt0"></p>
+            </div>
+            <div class="tile">
+                <p class="txt0"></p>
+            </div>
+            <div class="tile">
+                <p class="txt0"></p>
+            </div>
+            <div class="tile">
+                <p class="txt0"></p>
+            </div>
+            <div class="tile">
+                <p class="txt0"></p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
