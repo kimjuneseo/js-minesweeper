@@ -18,9 +18,6 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubun
 
 h1 {color: #fff; text-align: center;}
 
-.container {
-
-}
 .container .menu, .container .level {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -88,7 +85,6 @@ h1 {color: #fff; text-align: center;}
     background-color: #ffd466;
 }
 .container .gameBoard .tile.click {background: #ffb800;}
-.container .gameBoard .tile .txt0{}
 .container .gameBoard .tile .txt1{color: rgb(38, 184, 58);}
 .container .gameBoard .tile .txt2{color: rgb(156, 111, 14);}
 .container .gameBoard .tile .txt3{color: rgb(223, 16, 16);}

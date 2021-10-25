@@ -56,7 +56,7 @@ const gameArrMaker = (level) => {
     };
 };
 
-const mineMaker = () => {
+const mineArrMaker = () => {
     mineArr = []
     for (let i = 0; i < mineNumMaker(); i++) {
         let x = Math.floor(Math.random() * levelChangeNum());
@@ -89,10 +89,15 @@ const frameMaker = () => {
     gameBoard.style.pointerEvents = 'auto';
     reset.style.pointerEvents = 'auto';
     
+    resetTimer();
     gameArrMaker(levelChangeNum());
-    mineMaker();
+    mineArrMaker();
     gameBoardMaker();
 };
+
+const gameBoardClick = (e) => {
+    
+}
 
 reset.addEventListener("click", () => {
     resetTimer();
@@ -112,12 +117,20 @@ gameBoard.addEventListener("click", (e) => {
         firstClick = false;
     };
     e.target.classList.add("click");
+
 });
 
 gameBoard.addEventListener('contextmenu', (e) => {
     e.preventDefault();
     e.target.classList.toggle('flag');
 });
+
+
+
+
+
+
+
 
 
 // const evt = new App()
