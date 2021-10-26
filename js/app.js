@@ -72,8 +72,8 @@ const mineArrMaker = () => {
     };
     mineArr.forEach((e) => {
         mine[e[0]][e[1]] = 'e';
-    })
-}
+    });
+};
 
 const gameBoardMaker = () => {
     gameBoard.innerHTML = '';
@@ -87,7 +87,7 @@ const gameBoardMaker = () => {
                 gameBoard.innerHTML += `<div class="tile" data-x='${x}' data-y='${y}'>
             <p class></p>
             </div>`;
-        })
+        });
     });
 };
 
@@ -106,20 +106,39 @@ const mineFinder = () => {
 
 }
 
-const gameClickListener = ({target}) => {
-    if (target.childNodes[1].classList.contains('txt_mine')) {
-        gameBoard.childNodes.forEach(e => {
-            if(e.childNodes[1].classList.contains('txt_mine')){
-                e.childNodes[1].classList.remove('non-click');
-            };
-        });
-        resetTimer();
-        return;
+const boomMine = () => {
+    gameBoard.childNodes.forEach(e => {
+        if (e.childNodes[1].classList.contains('txt_mine')) {
+            e.childNodes[1].classList.remove('non-click');
+        };
+    });
+    resetTimer();
+   
+}
+
+const normalBlocks = (target) => {
+    let tx = parseInt(target.dataset.x);
+    let ty = parseInt(target.dataset.y);
+    let count = 0;
+        if (mine[tx][ty - 1]  == 'e'){ count++ }
+        if (mine[tx][ty + 1]  == 'e'){ count++ }
+        if (mine[tx - 1][ty]  == 'e'){ count++ }
+        if (mine[tx + 1][ty]  == 'e'){ count++ }
+        if (mine[tx - 1][ty - 1]  == 'e'){ count++ }
+        if (mine[tx + 1][ty - 1]  == 'e'){ count++ }
+        if (mine[tx - 1][ty + 1]  == 'e'){ count++ }
+        if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
+        target.childNodes[1].innerText = count;
+
+};
+
+const gameClickListener = ({ target }) => {
+    target.classList.add("click");
+    if (firstClick) {
+        firstClick = false;
+        startTimer();   
     };
-    if (!target.childNodes[1].classList.contains('txt_mine')) {
-        console.log(mine[target.dataset.x][target.dataset.y])
-        mine[target.dataset.x][target.dataset.y]
-    }
+    target.childNodes[1].classList.contains('txt_mine') ? boomMine() : normalBlocks(target);
 }
 
 reset.addEventListener("click", () => {
@@ -133,15 +152,7 @@ level.forEach(levels => {
     });
 });
 
-gameBoard.addEventListener("click", (e) => {
-    if (firstClick) {
-        e.target
-        startTimer();
-        firstClick = false;
-    };
-    e.target.classList.add("click");
-    gameClickListener(e);
-});
+gameBoard.addEventListener("click", (e) => gameClickListener(e) );
 
 gameBoard.addEventListener('contextmenu', (e) => {
     if (firstClick) {
@@ -152,8 +163,4 @@ gameBoard.addEventListener('contextmenu', (e) => {
     e.target.classList.toggle('flag');
 });
 
-
-// 찾는건 dataset사용해서 하기
-// x = ?
-// y = ?
-// 넣어서
+//예외처리 -일때 거기는 제외 
