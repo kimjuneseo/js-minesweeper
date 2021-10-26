@@ -9,8 +9,6 @@ let gameLevel;
 let timerSec = 0;
 let stoptime = true;
 let firstClick = true;
-
-let notMine = [];
 const levelChangeNum = () => {
     if (gameLevel === 'easy') return 10;
     if (gameLevel === 'normal') return 15;
@@ -112,7 +110,7 @@ const boomMine = () => {
             e.childNodes[1].classList.remove('non-click');
         };
     });
-    resetTimer();
+    stoptime = true;
    
 }
 
@@ -120,17 +118,74 @@ const normalBlocks = (target) => {
     let tx = parseInt(target.dataset.x);
     let ty = parseInt(target.dataset.y);
     let count = 0;
-        if (mine[tx][ty - 1]  == 'e'){ count++ }
-        if (mine[tx][ty + 1]  == 'e'){ count++ }
-        if (mine[tx - 1][ty]  == 'e'){ count++ }
-        if (mine[tx + 1][ty]  == 'e'){ count++ }
-        if (mine[tx - 1][ty - 1]  == 'e'){ count++ }
-        if (mine[tx + 1][ty - 1]  == 'e'){ count++ }
-        if (mine[tx - 1][ty + 1]  == 'e'){ count++ }
-        if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
-        target.childNodes[1].innerText = count;
+        if(ty === 0){
+            if (mine[tx][ty + 1]  == 'e'){ count++ }
+            if (mine[tx + 1][ty]  == 'e'){ count++ }
+            if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
+        }else if(ty === levelChangeNum() - 1){
+            if (mine[tx][ty - 1]  == 'e'){ count++ }
+            if (mine[tx + 1][ty]  == 'e'){ count++ }
+            if (mine[tx + 1][ty - 1]  == 'e'){ count++ }
+        }else if(tx === 0){
+            if (mine[tx][ty - 1]  == 'e'){ count++ }
+            if (mine[tx][ty + 1]  == 'e'){ count++ }
+            if (mine[tx + 1][ty]  == 'e'){ count++ }
+            if (mine[tx + 1][ty - 1]  == 'e'){ count++ }
+            if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
+        }else if(tx === levelChangeNum() - 1){
+            if (mine[tx][ty - 1]  == 'e'){ count++ }
+            if (mine[tx][ty + 1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty]  == 'e'){ count++ }
+            if (mine[tx - 1][ty - 1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty + 1]  == 'e'){ count++ }
+        } else if(tx === 0 && ty === 0){
+            if (mine[tx][ty + 1]  == 'e'){ count++ }
+            if (mine[tx + 1][ty]  == 'e'){ count++ }
+            if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
+        } else if(tx === 0 && ty === levelChangeNum() -1  ){
+            if (mine[tx][ty - 1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty - 1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty]  == 'e'){ count++ }
+        } else if(tx === levelChangeNum() -1 && tx === 0){
+            if (mine[tx][ty + 1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty + 1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty]  == 'e'){ count++ }
+        } else if(tx === levelChangeNum() -1 && ty === levelChangeNum() -1){
+            if (mine[tx][ty - 1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty]  == 'e'){ count++ }
+            if (mine[tx - 1][ty -1]  == 'e'){ count++ }
+
+        }
+        else{
+            if (mine[tx][ty - 1]  == 'e'){ count++ }
+            if (mine[tx][ty + 1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty]  == 'e'){ count++ }
+            if (mine[tx + 1][ty]  == 'e'){ count++ }
+            if (mine[tx - 1][ty - 1]  == 'e'){ count++ }
+            if (mine[tx + 1][ty - 1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty + 1]  == 'e'){ count++ }
+            if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
+        }
+        let result = count == 0 ? '' : count 
+        target.childNodes[1].innerText = result;
 
 };
+
+
+
+
+// if (mine[tx][ty - 1]  == 'e'){ count++ }
+// if (mine[tx][ty + 1]  == 'e'){ count++ }
+// if (mine[tx - 1][ty]  == 'e'){ count++ }
+// if (mine[tx + 1][ty]  == 'e'){ count++ }
+// if (mine[tx - 1][ty - 1]  == 'e'){ count++ }
+// if (mine[tx + 1][ty - 1]  == 'e'){ count++ }
+// if (mine[tx - 1][ty + 1]  == 'e'){ count++ }
+// if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
+
+const normalChainBlocks = () => {
+
+}
 
 const gameClickListener = ({ target }) => {
     target.classList.add("click");
@@ -141,9 +196,7 @@ const gameClickListener = ({ target }) => {
     target.childNodes[1].classList.contains('txt_mine') ? boomMine() : normalBlocks(target);
 }
 
-reset.addEventListener("click", () => {
-    frameMaker();
-});
+reset.addEventListener("click",() => frameMaker());
 
 level.forEach(levels => {
     levels.addEventListener("click", e => {
@@ -163,4 +216,4 @@ gameBoard.addEventListener('contextmenu', (e) => {
     e.target.classList.toggle('flag');
 });
 
-//예외처리 -일때 거기는 제외 
+//밑에서 2개 예외처리 && NaN나오는거 고치기
