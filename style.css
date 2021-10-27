@@ -85,9 +85,15 @@ h1 {color: #fff; text-align: center;}
     background-color: #ffd466;
 }
 .container .gameBoard .tile.click {background: #ffb800;}
+.container .gameBoard .tile .txt0{display: none;}
 .container .gameBoard .tile .txt1{color: rgb(38, 184, 58);}
-.container .gameBoard .tile .txt2{color: rgb(156, 111, 14);}
-.container .gameBoard .tile .txt3{color: rgb(223, 16, 16);}
+.container .gameBoard .tile .txt2{color: rgb(182, 125, 1);}
+.container .gameBoard .tile .txt3{color: rgb(255, 0, 0);}
+.container .gameBoard .tile .txt4{color: rgb(25, 0, 255);}
+.container .gameBoard .tile .txt5{color: rgb(255, 0, 242);}
+.container .gameBoard .tile .txt6{color: rgb(229, 255, 0);}
+.container .gameBoard .tile .txt7{color: rgb(162, 0, 255);}
+.container .gameBoard .tile .txt8{color: rgb(0, 255, 242);}
 .container .gameBoard .txt_mine img{
     width: 100%;
     margin-bottom: -2px;

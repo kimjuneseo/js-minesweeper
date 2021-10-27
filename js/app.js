@@ -177,18 +177,6 @@ const normalBlocks = (target) => {
     }
 };
 
-
-
-
-// if (mine[tx][ty - 1]  == 'e'){ count++ }
-// if (mine[tx][ty + 1]  == 'e'){ count++ }
-// if (mine[tx - 1][ty]  == 'e'){ count++ }
-// if (mine[tx + 1][ty]  == 'e'){ count++ }
-// if (mine[tx - 1][ty - 1]  == 'e'){ count++ }
-// if (mine[tx + 1][ty - 1]  == 'e'){ count++ }
-// if (mine[tx - 1][ty + 1]  == 'e'){ count++ }
-// if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
-
 const normalChainBlocks = () => {
 
 }
@@ -223,4 +211,8 @@ gameBoard.addEventListener('contextmenu', (e) => {
     e.target.classList.toggle('flag');
 });
 
-//밑에서 2개 예외처리 && NaN나오는거 고치기
+// 첫클릭 지뢰x
+// 연속파괴
+// 클린된거에 깃발 x
+// 터질시
+// 지뢰 찾아진곳은 빨간
