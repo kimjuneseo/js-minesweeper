@@ -111,7 +111,7 @@ const boomMine = () => {
         };
     });
     stoptime = true;
-   
+    gameBoard.style.pointerEvents = 'none';
 }
 
 const normalBlocks = (target) => {
@@ -119,14 +119,13 @@ const normalBlocks = (target) => {
     let ty = parseInt(target.dataset.y);
     let mineLen = levelChangeNum() - 1
     let count = 0;
-    console.log(target.childNodes[1]);
     if(!target.childNodes[1].classList.contains('click')){
         if(ty === 0  && tx !== mineLen && tx !== 0){
             if (mine[tx][ty + 1]  == 'e'){ count++ }
             if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
             if (mine[tx - 1][ty]  == 'e'){ count++ }
             if (mine[tx + 1][ty]  == 'e'){ count++ }
-        }else if(ty === mineLen && tx != mineLen && tx != 0){
+        }else if(ty === mineLen && tx !== mineLen && tx !== 0){
             if (mine[tx][ty - 1]  == 'e'){ count++ }
             if (mine[tx - 1][ty]  == 'e'){ count++ }
             if (mine[tx + 1][ty -1]  == 'e'){ count++ }
@@ -187,8 +186,9 @@ const gameClickListener = ({ target }) => {
         firstClick = false;
         startTimer();   
     };
-   if(target.childNodes[1]){target.childNodes[1].classList.contains('txt_mine') ? boomMine() : normalBlocks(target);}
-    
+   if(target.childNodes[1]){
+       target.childNodes[1].classList.contains('txt_mine') ? boomMine() : normalBlocks(target);
+    }    
 }
 
 reset.addEventListener("click",() => frameMaker());
@@ -211,8 +211,9 @@ gameBoard.addEventListener('contextmenu', (e) => {
     e.target.classList.toggle('flag');
 });
 
-// 첫클릭 지뢰x
 // 연속파괴
+// 첫클릭 지뢰x
+// 깃발 갯수는 지뢰 개수만큼
 // 클린된거에 깃발 x
 // 터질시
 // 지뢰 찾아진곳은 빨간
