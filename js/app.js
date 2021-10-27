@@ -3,7 +3,7 @@ const gameBoard = document.querySelector('.gameBoard');
 const timer = document.querySelector('.timer');
 const reset = document.querySelector('.reset');
 
-let mine;
+let gameBoardArr;
 let mineArr;
 let gameLevel;
 let timerSec = 0;
@@ -46,18 +46,18 @@ const timerCycle = () => {
 };
 
 const gameArrMaker = level => {
-    mine = [];
+    gameBoardArr = [];
     firstClick = true;
     for (let i = 0; i < level; i++) {
-        mine.push([]);
+        gameBoardArr.push([]);
         for (let j = 0; j < level; j++) {
-            mine[i].push(1);
+            gameBoardArr[i].push(1);
         };
     };
 };
 
 const mineArrMaker = () => {
-    mineArr = []
+    mineArr = [];
     for (let i = 0; i < mineNumMaker(); i++) {
         let x = Math.floor(Math.random() * levelChangeNum());
         let y = Math.floor(Math.random() * levelChangeNum());
@@ -69,14 +69,14 @@ const mineArrMaker = () => {
         mineArr.push([x, y]);
     };
     mineArr.forEach((e) => {
-        mine[e[0]][e[1]] = 'e';
+        gameBoardArr[e[0]][e[1]] = 'e';
     });
 };
 
 const gameBoardMaker = () => {
     gameBoard.innerHTML = '';
-    mine.forEach((e, x) => {
-        e.forEach((el, y) => {
+    gameBoardArr.forEach((e, y) => {
+        e.forEach((el, x) => {
             el === 'e' ?
                 gameBoard.innerHTML +=
                 `<div class="tile" data-x='${x}' data-y='${y}'>
@@ -102,7 +102,7 @@ const frameMaker = () => {
 
 const mineFinder = () => {
 
-}
+};
 
 const boomMine = () => {
     gameBoard.childNodes.forEach(e => {
@@ -111,70 +111,116 @@ const boomMine = () => {
         };
     });
     stoptime = true;
-    gameBoard.style.pointerEvents = 'none';
+    // gameBoard.style.pointerEvents = 'none';
+};
+
+const boardLine = (x, y) => {
+
 }
 
-const normalBlocks = (target) => {
-    let tx = parseInt(target.dataset.x);
-    let ty = parseInt(target.dataset.y);
-    let mineLen = levelChangeNum() - 1
-    let count = 0;
-    if(!target.childNodes[1].classList.contains('click')){
-        if(ty === 0  && tx !== mineLen && tx !== 0){
-            if (mine[tx][ty + 1]  == 'e'){ count++ }
-            if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty]  == 'e'){ count++ }
-            if (mine[tx + 1][ty]  == 'e'){ count++ }
-        }else if(ty === mineLen && tx !== mineLen && tx !== 0){
-            if (mine[tx][ty - 1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty]  == 'e'){ count++ }
-            if (mine[tx + 1][ty -1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty -1]  == 'e'){ count++ }
-        }else if(tx === 0){
-            if (mine[tx][ty - 1]  == 'e'){ count++ }
-            if (mine[tx][ty + 1]  == 'e'){ count++ }
-            if (mine[tx + 1][ty]  == 'e'){ count++ }
-            if (mine[tx + 1][ty - 1]  == 'e'){ count++ }
-            if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
-        }else if(tx === mineLen ){
-            if (mine[tx][ty - 1]  == 'e'){ count++ }
-            if (mine[tx][ty + 1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty]  == 'e'){ count++ }
-            if (mine[tx - 1][ty - 1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty + 1]  == 'e'){ count++ }
-        } else if(tx === 0 && ty === 0){
-            if (mine[tx][ty + 1]  == 'e'){ count++ }
-            if (mine[tx + 1][ty]  == 'e'){ count++ }
-            if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
-        } else if(tx === 0 && ty === mineLen ){
-            if (mine[tx][ty - 1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty - 1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty]  == 'e'){ count++ }
-        } else if(tx === mineLen && tx === 0 ){
-            if (mine[tx][ty + 1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty + 1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty]  == 'e'){ count++ }
-        } else if(tx === mineLen && ty === mineLen ){
-            console.log(1135);
-            if (mine[tx][ty - 1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty]  == 'e'){ count++ }
-            if (mine[tx - 1][ty -1]  == 'e'){ count++ }
+let count = 0;
 
-        }else{
-            if (mine[tx][ty - 1]  == 'e'){ count++ }
-            if (mine[tx][ty + 1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty]  == 'e'){ count++ }
-            if (mine[tx + 1][ty]  == 'e'){ count++ }
-            if (mine[tx - 1][ty - 1]  == 'e'){ count++ }
-            if (mine[tx + 1][ty - 1]  == 'e'){ count++ }
-            if (mine[tx - 1][ty + 1]  == 'e'){ count++ }
-            if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
+const countNumber = (target) => {
+    count = 0
+    let mineLen = levelChangeNum() - 1;
+    let tx = parseInt(target.dataset.x); 
+    let ty = parseInt(target.dataset.y);
+
+    
+
+    if(!target.childNodes[1].classList.contains('click')){
+        if(모서리확인(ty, tx)){
+            console.log('안쪽');
+            // 상 [0][tx]
+            console.log(ty, tx);
+            if(ty === 0 ){
+                console.log('상');
+                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; }
+                if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; }
+            }
+            // 하[9][tx]
+            else if(ty === mineLen ){
+                console.log('하');
+                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
+                if (gameBoardArr[ty - 1][tx - 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; }
+            }
+            //좌[ty][0]
+            else if(tx === 0  && ty !== mineLen && ty !== 0){
+                console.log('좌');
+                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
+                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; }
+            }
+            //우[ty][마지막 수]
+            else if(tx === mineLen && ty != mineLen && ty != 0){
+                console.log('우');
+                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
+                if (gameBoardArr[ty + 1][tx -1]  == 'e'){ count++; }
+                if (gameBoardArr[ty - 1][tx -1]  == 'e'){ count++; }
+            } 
+            //나머지
+            else{
+                console.log(ty, tx);
+                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
+                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; }
+                if (gameBoardArr[ty - 1][tx - 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; }
+            };
         }
-        let result = count == 0 ? '' : count 
+       
+       
+        let result = count == 0 ? '' : count;
         target.childNodes[1].innerText = result;
-        target.childNodes[1].classList.add(`txt${count}`)
+        target.childNodes[1].classList.add(`txt${count}`);
     }
 };
+
+const 모서리확인 = (ty, tx) => {
+    let mineLen = levelChangeNum() - 1;
+        // [0][0]
+         if(ty === 0 && tx === 0){
+            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
+            if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; }
+            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; }
+        }
+        // [0][9]
+        else if(ty === 0 && tx === mineLen ){
+            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
+            if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; }
+            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; }
+        }
+        // [9][0]
+        else if(ty === mineLen && tx === 0 ){
+            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
+            if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; }
+            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
+        }
+        //[9][9]
+        else if(tx === mineLen && ty === mineLen ){
+            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
+            if (gameBoardArr[ty - 1][tx -1]  == 'e'){ count++; }
+            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
+        
+        }
+        else{
+            return true;
+        };
+};
+
+
+
 
 const normalChainBlocks = () => {
 
@@ -186,9 +232,7 @@ const gameClickListener = ({ target }) => {
         firstClick = false;
         startTimer();   
     };
-   if(target.childNodes[1]){
-       target.childNodes[1].classList.contains('txt_mine') ? boomMine() : normalBlocks(target);
-    }    
+       target.childNodes[1].classList.contains('txt_mine') ? boomMine() : countNumber(target);
 }
 
 reset.addEventListener("click",() => frameMaker());
