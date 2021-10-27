@@ -117,22 +117,27 @@ const boomMine = () => {
 const normalBlocks = (target) => {
     let tx = parseInt(target.dataset.x);
     let ty = parseInt(target.dataset.y);
+    let mineLen = levelChangeNum() - 1
     let count = 0;
-        if(ty === 0){
+    console.log(target.childNodes[1]);
+    if(!target.childNodes[1].classList.contains('click')){
+        if(ty === 0  && tx !== mineLen && tx !== 0){
             if (mine[tx][ty + 1]  == 'e'){ count++ }
-            if (mine[tx + 1][ty]  == 'e'){ count++ }
             if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
-        }else if(ty === levelChangeNum() - 1){
-            if (mine[tx][ty - 1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty]  == 'e'){ count++ }
             if (mine[tx + 1][ty]  == 'e'){ count++ }
-            if (mine[tx + 1][ty - 1]  == 'e'){ count++ }
+        }else if(ty === mineLen && tx != mineLen && tx != 0){
+            if (mine[tx][ty - 1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty]  == 'e'){ count++ }
+            if (mine[tx + 1][ty -1]  == 'e'){ count++ }
+            if (mine[tx - 1][ty -1]  == 'e'){ count++ }
         }else if(tx === 0){
             if (mine[tx][ty - 1]  == 'e'){ count++ }
             if (mine[tx][ty + 1]  == 'e'){ count++ }
             if (mine[tx + 1][ty]  == 'e'){ count++ }
             if (mine[tx + 1][ty - 1]  == 'e'){ count++ }
             if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
-        }else if(tx === levelChangeNum() - 1){
+        }else if(tx === mineLen ){
             if (mine[tx][ty - 1]  == 'e'){ count++ }
             if (mine[tx][ty + 1]  == 'e'){ count++ }
             if (mine[tx - 1][ty]  == 'e'){ count++ }
@@ -142,21 +147,21 @@ const normalBlocks = (target) => {
             if (mine[tx][ty + 1]  == 'e'){ count++ }
             if (mine[tx + 1][ty]  == 'e'){ count++ }
             if (mine[tx + 1][ty + 1]  == 'e'){ count++ }
-        } else if(tx === 0 && ty === levelChangeNum() -1  ){
+        } else if(tx === 0 && ty === mineLen ){
             if (mine[tx][ty - 1]  == 'e'){ count++ }
             if (mine[tx - 1][ty - 1]  == 'e'){ count++ }
             if (mine[tx - 1][ty]  == 'e'){ count++ }
-        } else if(tx === levelChangeNum() -1 && tx === 0){
+        } else if(tx === mineLen && tx === 0 ){
             if (mine[tx][ty + 1]  == 'e'){ count++ }
             if (mine[tx - 1][ty + 1]  == 'e'){ count++ }
             if (mine[tx - 1][ty]  == 'e'){ count++ }
-        } else if(tx === levelChangeNum() -1 && ty === levelChangeNum() -1){
+        } else if(tx === mineLen && ty === mineLen ){
+            console.log(1135);
             if (mine[tx][ty - 1]  == 'e'){ count++ }
             if (mine[tx - 1][ty]  == 'e'){ count++ }
             if (mine[tx - 1][ty -1]  == 'e'){ count++ }
 
-        }
-        else{
+        }else{
             if (mine[tx][ty - 1]  == 'e'){ count++ }
             if (mine[tx][ty + 1]  == 'e'){ count++ }
             if (mine[tx - 1][ty]  == 'e'){ count++ }
@@ -168,7 +173,8 @@ const normalBlocks = (target) => {
         }
         let result = count == 0 ? '' : count 
         target.childNodes[1].innerText = result;
-
+        target.childNodes[1].classList.add(`txt${count}`)
+    }
 };
 
 
@@ -193,7 +199,8 @@ const gameClickListener = ({ target }) => {
         firstClick = false;
         startTimer();   
     };
-    target.childNodes[1].classList.contains('txt_mine') ? boomMine() : normalBlocks(target);
+   if(target.childNodes[1]){target.childNodes[1].classList.contains('txt_mine') ? boomMine() : normalBlocks(target);}
+    
 }
 
 reset.addEventListener("click",() => frameMaker());
