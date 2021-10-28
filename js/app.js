@@ -11,6 +11,7 @@ let timerSec = 0;
 let stoptime = true;
 let firstClick = true;
 let count;
+let countArr = [];
 const levelChangeNum = () => {
     if (gameLevel === 'easy') return 10;
     if (gameLevel === 'normal') return 15;
@@ -118,39 +119,35 @@ const boomMine = () => {
     // gameOver.style.display = 'flex';
 };
 
-const boardLine = (x, y) => {
 
-}
+const 숫자세기 = () => {
+    countArr.forEach(e => gameBoardArr[e[0]][e[1]] === 'e' ? count++ : count);
+};
 
 const cornerCheck = (ty, tx) => {
     let mineLen = levelChangeNum() - 1;
 
+    if(ty === 0 && tx === 0){
         // [0][0]
-         if(ty === 0 && tx === 0){
-            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
-            if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; };
-            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
-        }
-        // [0][9]
-        else if(ty === 0 && tx === mineLen ){
-            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
-            if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; };
-            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
-        }
-        // [9][0]
-        else if(ty === mineLen && tx === 0 ){
-            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
-            if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; };
-            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
-        }
-        //[9][9]
-        else if(tx === mineLen && ty === mineLen ){
-            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
-            if (gameBoardArr[ty - 1][tx -1]  == 'e'){ count++; };
-            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
-        
-        }
-        else{
+        countArr = [...countArr,[ty,tx + 1],[ty + 1,tx + 1], [ty + 1,tx]];
+        숫자세기();
+        countArr = [];
+        }else if(ty === 0 && tx === mineLen ){
+            // [0][9]
+            countArr = [...countArr,[ty, tx - 1], [ty + 1,tx - 1], [ty + 1,tx] ];
+            숫자세기();
+             countArr = [];
+        }else if(ty === mineLen && tx === 0 ){
+            // [9][0]
+            countArr = [...countArr,[ty - 1, tx], [ty - 1, tx + 1], [ty, tx + 1]];
+            숫자세기();
+            countArr = [];
+        }else if(tx === mineLen && ty === mineLen ){
+            //[9][9]
+            countArr = [...countArr,[ty - 1, tx], [ty - 1, tx -1], [ty - 1, tx -1] ];
+            숫자세기();
+            countArr = [];   
+        }else{
             return true;
         };
 };
@@ -166,79 +163,64 @@ const countNumber = (target) => {
 
     if(!target.childNodes[1].classList.contains('click')){
         if(cornerCheck(ty, tx)){
-            // 상 [0][tx]
             if(ty === 0 ){
-                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
-                if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; };
-            }
-            // 하[9][tx]
-            else if(ty === mineLen ){
-                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
-                if (gameBoardArr[ty - 1][tx - 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; };
-            }
-            //좌[ty][0]
-            else if(tx === 0  && ty !== mineLen && ty !== 0){
-                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
-                if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
-            }
-            //우[ty][마지막 수]
-            else if(tx === mineLen && ty != mineLen && ty != 0){
-                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
-                if (gameBoardArr[ty + 1][tx -1]  == 'e'){ count++; };
-                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
-                if (gameBoardArr[ty - 1][tx -1]  == 'e'){ count++; };
-            } 
-            //나머지
-            else{
-                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
-                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
-                if (gameBoardArr[ty - 1][tx - 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; };
-                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; };
+                countArr = [...countArr,[ty, tx - 1], [ty, tx + 1], [ty + 1, tx], [ty + 1, tx - 1], [ty + 1, tx + 1] ];
+                숫자세기();
+                countArr = [];  
+            }else if(ty === mineLen ){
+                // 하[9][tx]
+                countArr = [...countArr, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty - 1, tx - 1], [ty - 1, tx + 1] ];
+                숫자세기();
+                countArr = [];  
+            }else if(tx === 0  && ty !== mineLen && ty !== 0){
+                //좌[ty][0]
+                countArr = [...countArr, [ty, tx + 1], [ty + 1, tx + 1], [ty - 1, tx], [ty - 1, tx + 1], [ty + 1, tx] ];
+                숫자세기();
+                countArr = [];  
+            }else if(tx === mineLen && ty != mineLen && ty != 0){
+                //우[ty][마지막 수]
+                countArr = [...countArr, [ty, tx - 1], [ty - 1, tx], [ty + 1, tx - 1], [ty + 1, tx], [ty - 1, tx - 1] ];
+                숫자세기();
+                countArr = []; 
+            }else{
+                //나머지
+                countArr = [...countArr, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
+                숫자세기();
+                countArr = []; 
             };
         };
         let result = count == 0 ? '' : count;
         target.childNodes[1].innerText = result;
         target.childNodes[1].classList.add(`txt${count}`);
         if(target.childNodes[1].classList.contains('txt0')){
-            영터지기(ty, tx)
-           console.log(gameBoardArr, mineArr);
+            // 영터지기(ty, tx, target)
+        //    console.log(gameBoardArr, mineArr);
         }
     };
 };
 
-const 영터지기 = (ty, tx) => {
-    if (gameBoardArr[ty][tx - 1]  == '1'){ 열기(ty, tx - 1)  };
-    if (gameBoardArr[ty][tx + 1]  == '1'){ 열기(ty, tx + 1) };
-    if (gameBoardArr[ty - 1][tx]  == '1'){ 열기(ty -1, tx) };
-    if (gameBoardArr[ty + 1][tx]  == '1'){ 열기(ty + 1,tx) };
-    if (gameBoardArr[ty - 1][tx - 1]  == '1'){ 열기(ty - 1, tx - 1) };
-    if (gameBoardArr[ty + 1][tx - 1]  == '1'){ 열기(ty + 1, tx - 1) };
-    if (gameBoardArr[ty - 1][tx + 1]  == '1'){ 열기(ty - 1, tx + 1) };
-    if (gameBoardArr[ty + 1][tx + 1]  == '1'){ 열기(ty + 1, tx + 1) };
-}
+// const 영터지기 = (ty, tx, target) => {
+//     if (gameBoardArr[ty][tx - 1]  == '1'){ 열기(ty, tx - 1, target)  };
+//     if (gameBoardArr[ty][tx + 1]  == '1'){ 열기(ty, tx + 1, target) };
+//     if (gameBoardArr[ty - 1][tx]  == '1'){ 열기(ty -1, tx, target) };
+//     if (gameBoardArr[ty + 1][tx]  == '1'){ 열기(ty + 1,tx, target) };
+//     if (gameBoardArr[ty - 1][tx - 1]  == '1'){ 열기(ty - 1, tx - 1, target) };
+//     if (gameBoardArr[ty + 1][tx - 1]  == '1'){ 열기(ty + 1, tx - 1, target) };
+//     if (gameBoardArr[ty - 1][tx + 1]  == '1'){ 열기(ty - 1, tx + 1, target) };
+//     if (gameBoardArr[ty + 1][tx + 1]  == '1'){ 열기(ty + 1, tx + 1, target) };
+// }
 
-const 열기 = (ty, tx) => {
-    gameBoard.childNodes.forEach(e => {
-        if(e.dataset.x == tx && e.dataset.y == ty){
-            e.classList.add('click')
-        }
-        console.log();
-    })
-}
+// const 열기 = (ty, tx, target) => {
+//     gameBoard.childNodes.forEach(e => {
+//         if(e.dataset.x == tx && e.dataset.y == ty){
+//             e.classList.add('click')
+//             // 영터지기(ty, tx)
+//             // countNumber(target)
+//             console.log(target);
+//         }
+//         console.log();
+//     })
+// }
 
 const zeroEvent = (target) => {
     let tx = parseInt(target.dataset.x);
