@@ -129,54 +129,49 @@ const countNumber = (target) => {
     
 
     if(!target.childNodes[1].classList.contains('click')){
-        if(모서리확인(ty, tx)){
-            console.log('안쪽');
+        if(cornerCheck(ty, tx)){
             // 상 [0][tx]
-            console.log(ty, tx);
             if(ty === 0 ){
-                console.log('상');
-                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; }
-                if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
+                if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; };
             }
             // 하[9][tx]
             else if(ty === mineLen ){
-                console.log('하');
-                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
-                if (gameBoardArr[ty - 1][tx - 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
+                if (gameBoardArr[ty - 1][tx - 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; };
             }
             //좌[ty][0]
             else if(tx === 0  && ty !== mineLen && ty !== 0){
-                console.log('좌');
-                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
-                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; }
+                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
+                if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
             }
             //우[ty][마지막 수]
             else if(tx === mineLen && ty != mineLen && ty != 0){
-                console.log('우');
-                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
-                if (gameBoardArr[ty + 1][tx -1]  == 'e'){ count++; }
-                if (gameBoardArr[ty - 1][tx -1]  == 'e'){ count++; }
+                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
+                if (gameBoardArr[ty + 1][tx -1]  == 'e'){ count++; };
+                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
+                if (gameBoardArr[ty - 1][tx -1]  == 'e'){ count++; };
             } 
             //나머지
             else{
-                console.log(ty, tx);
-                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
-                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; }
-                if (gameBoardArr[ty - 1][tx - 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; }
-                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; }
+                if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
+                if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
+                if (gameBoardArr[ty - 1][tx - 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; };
+                if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; };
             };
         }
        
@@ -187,31 +182,31 @@ const countNumber = (target) => {
     }
 };
 
-const 모서리확인 = (ty, tx) => {
+const cornerCheck = (ty, tx) => {
     let mineLen = levelChangeNum() - 1;
         // [0][0]
          if(ty === 0 && tx === 0){
-            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
-            if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; }
-            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; }
+            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
+            if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; };
+            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
         }
         // [0][9]
         else if(ty === 0 && tx === mineLen ){
-            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
-            if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; }
-            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; }
+            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
+            if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; };
+            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
         }
         // [9][0]
         else if(ty === mineLen && tx === 0 ){
-            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
-            if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; }
-            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; }
+            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
+            if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; };
+            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
         }
         //[9][9]
         else if(tx === mineLen && ty === mineLen ){
-            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; }
-            if (gameBoardArr[ty - 1][tx -1]  == 'e'){ count++; }
-            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; }
+            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
+            if (gameBoardArr[ty - 1][tx -1]  == 'e'){ count++; };
+            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
         
         }
         else{
@@ -245,7 +240,6 @@ level.forEach(levels => {
 });
 
 gameBoard.addEventListener("click", (e) => gameClickListener(e) );
-
 gameBoard.addEventListener('contextmenu', (e) => {
     if (firstClick) {
         startTimer();
@@ -254,6 +248,14 @@ gameBoard.addEventListener('contextmenu', (e) => {
     e.preventDefault();
     e.target.classList.toggle('flag');
 });
+
+// const gameover = () => {
+//     gameOver.style.display = 'flex';
+// }
+
+// const gameover = () => {
+//     gameOver.style.display = 'flex';
+// }
 
 // 연속파괴
 // 첫클릭 지뢰x
