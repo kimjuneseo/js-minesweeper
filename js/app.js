@@ -2,6 +2,7 @@ const level = document.querySelectorAll(".level>button");
 const gameBoard = document.querySelector('.gameBoard');
 const timer = document.querySelector('.timer');
 const reset = document.querySelector('.reset');
+const gameOver = document.querySelector('.gameOver');
 
 let gameBoardArr;
 let mineArr;
@@ -9,6 +10,7 @@ let gameLevel;
 let timerSec = 0;
 let stoptime = true;
 let firstClick = true;
+let count;
 const levelChangeNum = () => {
     if (gameLevel === 'easy') return 10;
     if (gameLevel === 'normal') return 15;
@@ -90,6 +92,7 @@ const gameBoardMaker = () => {
 };
 
 const frameMaker = () => {
+    gameOver.style.display = 'none';
     gameBoard.style.gridTemplateColumns = `repeat(${levelChangeNum()}, 1fr)`;
     gameBoard.style.pointerEvents = 'auto';
     reset.style.pointerEvents = 'auto';
@@ -112,13 +115,45 @@ const boomMine = () => {
     });
     stoptime = true;
     // gameBoard.style.pointerEvents = 'none';
+    // gameOver.style.display = 'flex';
 };
 
 const boardLine = (x, y) => {
 
 }
 
-let count = 0;
+const cornerCheck = (ty, tx) => {
+    let mineLen = levelChangeNum() - 1;
+
+        // [0][0]
+         if(ty === 0 && tx === 0){
+            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
+            if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; };
+            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
+        }
+        // [0][9]
+        else if(ty === 0 && tx === mineLen ){
+            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
+            if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; };
+            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
+        }
+        // [9][0]
+        else if(ty === mineLen && tx === 0 ){
+            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
+            if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; };
+            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
+        }
+        //[9][9]
+        else if(tx === mineLen && ty === mineLen ){
+            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
+            if (gameBoardArr[ty - 1][tx -1]  == 'e'){ count++; };
+            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
+        
+        }
+        else{
+            return true;
+        };
+};
 
 const countNumber = (target) => {
     count = 0
@@ -126,7 +161,8 @@ const countNumber = (target) => {
     let tx = parseInt(target.dataset.x); 
     let ty = parseInt(target.dataset.y);
 
-    
+   
+    // if(target.childNodes[1].classList.contains)
 
     if(!target.childNodes[1].classList.contains('click')){
         if(cornerCheck(ty, tx)){
@@ -173,53 +209,43 @@ const countNumber = (target) => {
                 if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; };
                 if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; };
             };
-        }
-       
-       
+        };
         let result = count == 0 ? '' : count;
         target.childNodes[1].innerText = result;
         target.childNodes[1].classList.add(`txt${count}`);
-    }
+        if(target.childNodes[1].classList.contains('txt0')){
+            영터지기(ty, tx)
+           console.log(gameBoardArr, mineArr);
+        }
+    };
 };
 
-const cornerCheck = (ty, tx) => {
-    let mineLen = levelChangeNum() - 1;
-        // [0][0]
-         if(ty === 0 && tx === 0){
-            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
-            if (gameBoardArr[ty + 1][tx + 1]  == 'e'){ count++; };
-            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
-        }
-        // [0][9]
-        else if(ty === 0 && tx === mineLen ){
-            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
-            if (gameBoardArr[ty + 1][tx - 1]  == 'e'){ count++; };
-            if (gameBoardArr[ty + 1][tx]  == 'e'){ count++; };
-        }
-        // [9][0]
-        else if(ty === mineLen && tx === 0 ){
-            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
-            if (gameBoardArr[ty - 1][tx + 1]  == 'e'){ count++; };
-            if (gameBoardArr[ty][tx + 1]  == 'e'){ count++; };
-        }
-        //[9][9]
-        else if(tx === mineLen && ty === mineLen ){
-            if (gameBoardArr[ty - 1][tx]  == 'e'){ count++; };
-            if (gameBoardArr[ty - 1][tx -1]  == 'e'){ count++; };
-            if (gameBoardArr[ty][tx - 1]  == 'e'){ count++; };
-        
-        }
-        else{
-            return true;
-        };
-};
-
-
-
-
-const normalChainBlocks = () => {
-
+const 영터지기 = (ty, tx) => {
+    if (gameBoardArr[ty][tx - 1]  == '1'){ 열기(ty, tx - 1)  };
+    if (gameBoardArr[ty][tx + 1]  == '1'){ 열기(ty, tx + 1) };
+    if (gameBoardArr[ty - 1][tx]  == '1'){ 열기(ty -1, tx) };
+    if (gameBoardArr[ty + 1][tx]  == '1'){ 열기(ty + 1,tx) };
+    if (gameBoardArr[ty - 1][tx - 1]  == '1'){ 열기(ty - 1, tx - 1) };
+    if (gameBoardArr[ty + 1][tx - 1]  == '1'){ 열기(ty + 1, tx - 1) };
+    if (gameBoardArr[ty - 1][tx + 1]  == '1'){ 열기(ty - 1, tx + 1) };
+    if (gameBoardArr[ty + 1][tx + 1]  == '1'){ 열기(ty + 1, tx + 1) };
 }
+
+const 열기 = (ty, tx) => {
+    gameBoard.childNodes.forEach(e => {
+        if(e.dataset.x == tx && e.dataset.y == ty){
+            e.classList.add('click')
+        }
+        console.log();
+    })
+}
+
+const zeroEvent = (target) => {
+    let tx = parseInt(target.dataset.x);
+    let ty = parseInt(target.dataset.y);
+    let mineLen = levelChangeNum() - 1;
+    let count = 0;  
+};
 
 const gameClickListener = ({ target }) => {
     target.classList.add("click");
@@ -231,14 +257,12 @@ const gameClickListener = ({ target }) => {
 }
 
 reset.addEventListener("click",() => frameMaker());
-
 level.forEach(levels => {
     levels.addEventListener("click", e => {
         gameLevel = e.target.innerText;
         frameMaker();
     });
 });
-
 gameBoard.addEventListener("click", (e) => gameClickListener(e) );
 gameBoard.addEventListener('contextmenu', (e) => {
     if (firstClick) {
@@ -249,14 +273,7 @@ gameBoard.addEventListener('contextmenu', (e) => {
     e.target.classList.toggle('flag');
 });
 
-// const gameover = () => {
-//     gameOver.style.display = 'flex';
-// }
-
-// const gameover = () => {
-//     gameOver.style.display = 'flex';
-// }
-
+//0인부분에서 +1씩
 // 연속파괴
 // 첫클릭 지뢰x
 // 깃발 갯수는 지뢰 개수만큼

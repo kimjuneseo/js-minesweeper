@@ -104,3 +104,12 @@ h1 {color: #fff; text-align: center;}
 }
 
 .non-click{display: none;}
+
+.gameOver {
+    display: none;
+    color: white;
+    position: absolute;
+    margin-top: 80px;
+    font-size: 63px;
+    font-weight: bold;
+}
