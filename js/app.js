@@ -104,10 +104,6 @@ const frameMaker = () => {
     gameBoardMaker();
 };
 
-const mineFinder = () => {
-
-};
-
 const boomMine = () => {
     gameBoard.childNodes.forEach(e => {
         if (e.childNodes[1].classList.contains('txt_mine')) {
@@ -120,39 +116,35 @@ const boomMine = () => {
 };
 
 
-const 숫자세기 = () => {
+const countNum = () => {
     countArr.forEach(e => gameBoardArr[e[0]][e[1]] === 'e' ? count++ : count);
     countArr = [];
 };
 
 const cornerCheck = (ty, tx) => {
     let mineLen = levelChangeNum() - 1;
-    if(!ty){
-        console.log(11);
-        return;
-    }
     if(ty === 0 && tx === 0){
         // [0][0] 
         countArr = [...countArr,[ty,tx + 1],[ty + 1,tx + 1], [ty + 1,tx]];
-        숫자세기();
+        countNum();
         }else if(ty === 0 && tx === mineLen ){
             // [0][9]
             countArr = [...countArr,[ty, tx - 1], [ty + 1,tx - 1], [ty + 1,tx] ];
-            숫자세기();
+            countNum();
         }else if(ty === mineLen && tx === 0 ){
             // [9][0]
             countArr = [...countArr,[ty - 1, tx], [ty - 1, tx + 1], [ty, tx + 1]];
-            숫자세기();
+            countNum();
         }else if(tx === mineLen && ty === mineLen ){
             //[9][9]
-            countArr = [...countArr,[ty - 1, tx], [ty - 1, tx -1], [ty - 1, tx -1] ];
-            숫자세기();
+            countArr = [...countArr,[ty - 1, tx], [ty - 1, tx -1], [ty, tx -1] ];
+            countNum();
         }else{
             return true;
         };
 };
 
-const countNumber = (target) => {
+const countListener = (target) => {
     count = 0
     let mineLen = levelChangeNum() - 1;
     let tx = parseInt(target.dataset.x); 
@@ -161,64 +153,56 @@ const countNumber = (target) => {
         if(cornerCheck(ty, tx)){
             if(ty === 0 ){
                 countArr = [...countArr,[ty, tx - 1], [ty, tx + 1], [ty + 1, tx], [ty + 1, tx - 1], [ty + 1, tx + 1] ];
-                숫자세기();
+                countNum();
             }else if(ty === mineLen ){
                 // 하[9][tx]
                 countArr = [...countArr, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty - 1, tx - 1], [ty - 1, tx + 1] ];
-                숫자세기();
+                countNum();
             }else if(tx === 0  && ty !== mineLen && ty !== 0){
                 //좌[ty][0]
                 countArr = [...countArr, [ty, tx + 1], [ty + 1, tx + 1], [ty - 1, tx], [ty - 1, tx + 1], [ty + 1, tx] ];
-                숫자세기();
+                countNum();
             }else if(tx === mineLen && ty != mineLen && ty != 0){
                 //우[ty][마지막 수]
                 countArr = [...countArr, [ty, tx - 1], [ty - 1, tx], [ty + 1, tx - 1], [ty + 1, tx], [ty - 1, tx - 1] ];
-                숫자세기();
+                countNum();
             }else{
                 //나머지
                 countArr = [...countArr, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
-                숫자세기();
+                countNum();
             };
         };
         let result = count == 0 ? '' : count;
         target.childNodes[1].innerText = result;
         target.childNodes[1].classList.add(`txt${count}`);
         if(target.childNodes[1].classList.contains('txt0')){
-            // 영터지기(ty, tx, target)
-        //    console.log(gameBoardArr, mineArr);
+            
+            영터지기(ty, tx, target)
         }
     };
 };
 
+let mineABC = []
 const 영터지기 = (ty, tx, target) => {
-    if (gameBoardArr[ty][tx - 1]  == '1'){ 열기(ty, tx - 1, target)  };
-    if (gameBoardArr[ty][tx + 1]  == '1'){ 열기(ty, tx + 1, target) };
-    if (gameBoardArr[ty - 1][tx]  == '1'){ 열기(ty -1, tx, target) };
-    if (gameBoardArr[ty + 1][tx]  == '1'){ 열기(ty + 1,tx, target) };
-    if (gameBoardArr[ty - 1][tx - 1]  == '1'){ 열기(ty - 1, tx - 1, target) };
-    if (gameBoardArr[ty + 1][tx - 1]  == '1'){ 열기(ty + 1, tx - 1, target) };
-    if (gameBoardArr[ty - 1][tx + 1]  == '1'){ 열기(ty - 1, tx + 1, target) };
-    if (gameBoardArr[ty + 1][tx + 1]  == '1'){ 열기(ty + 1, tx + 1, target) };
+    mineABC = [...mineABC, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
+    열기(mineABC, target);
+    
 }
 
-// const 열기 = (ty, tx, target) => {
-//     gameBoard.childNodes.forEach(e => {
-//         if(e.dataset.x == tx && e.dataset.y == ty){
-//             e.classList.add('click')
-//             // 영터지기(ty, tx)
-//             // countNumber(target)
-//             console.log(target);
-//         }
-//         console.log();
-//     })
-// }
+const 열기 = (mineABC, target) => {
+    mineABC.forEach(el => {
+        if(gameBoardArr[el[0]][el[1]] === 1){
+            gameBoard.childNodes.forEach(e => {
+                if(el[0] == e.dataset.y && el[1] == e.dataset.x){
+                    e.classList.add('click');
+                }
+                console.log();
+            })
+        }
+        countArr = [];
+    });
 
-const zeroEvent = (target) => {
-    let tx = parseInt(target.dataset.x);
-    let ty = parseInt(target.dataset.y);
-    let mineLen = levelChangeNum() - 1;
-    let count = 0;  
-};
+}
 
 const gameClickListener = ({ target }) => {
     if(target.classList.contains('tile')){
@@ -227,7 +211,7 @@ const gameClickListener = ({ target }) => {
             firstClick = false;
             startTimer();   
         };
-           target.childNodes[1].classList.contains('txt_mine') ? boomMine() : countNumber(target);
+           target.childNodes[1].classList.contains('txt_mine') ? boomMine() : countListener(target);
     };
 };
 
