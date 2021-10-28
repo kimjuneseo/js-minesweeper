@@ -122,31 +122,31 @@ const boomMine = () => {
 
 const 숫자세기 = () => {
     countArr.forEach(e => gameBoardArr[e[0]][e[1]] === 'e' ? count++ : count);
+    countArr = [];
 };
 
 const cornerCheck = (ty, tx) => {
     let mineLen = levelChangeNum() - 1;
-
+    if(!ty){
+        console.log(11);
+        return;
+    }
     if(ty === 0 && tx === 0){
-        // [0][0]
+        // [0][0] 
         countArr = [...countArr,[ty,tx + 1],[ty + 1,tx + 1], [ty + 1,tx]];
         숫자세기();
-        countArr = [];
         }else if(ty === 0 && tx === mineLen ){
             // [0][9]
             countArr = [...countArr,[ty, tx - 1], [ty + 1,tx - 1], [ty + 1,tx] ];
             숫자세기();
-             countArr = [];
         }else if(ty === mineLen && tx === 0 ){
             // [9][0]
             countArr = [...countArr,[ty - 1, tx], [ty - 1, tx + 1], [ty, tx + 1]];
             숫자세기();
-            countArr = [];
         }else if(tx === mineLen && ty === mineLen ){
             //[9][9]
             countArr = [...countArr,[ty - 1, tx], [ty - 1, tx -1], [ty - 1, tx -1] ];
             숫자세기();
-            countArr = [];   
         }else{
             return true;
         };
@@ -157,36 +157,27 @@ const countNumber = (target) => {
     let mineLen = levelChangeNum() - 1;
     let tx = parseInt(target.dataset.x); 
     let ty = parseInt(target.dataset.y);
-
-   
-    // if(target.childNodes[1].classList.contains)
-
     if(!target.childNodes[1].classList.contains('click')){
         if(cornerCheck(ty, tx)){
             if(ty === 0 ){
                 countArr = [...countArr,[ty, tx - 1], [ty, tx + 1], [ty + 1, tx], [ty + 1, tx - 1], [ty + 1, tx + 1] ];
                 숫자세기();
-                countArr = [];  
             }else if(ty === mineLen ){
                 // 하[9][tx]
                 countArr = [...countArr, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty - 1, tx - 1], [ty - 1, tx + 1] ];
                 숫자세기();
-                countArr = [];  
             }else if(tx === 0  && ty !== mineLen && ty !== 0){
                 //좌[ty][0]
                 countArr = [...countArr, [ty, tx + 1], [ty + 1, tx + 1], [ty - 1, tx], [ty - 1, tx + 1], [ty + 1, tx] ];
                 숫자세기();
-                countArr = [];  
             }else if(tx === mineLen && ty != mineLen && ty != 0){
                 //우[ty][마지막 수]
                 countArr = [...countArr, [ty, tx - 1], [ty - 1, tx], [ty + 1, tx - 1], [ty + 1, tx], [ty - 1, tx - 1] ];
                 숫자세기();
-                countArr = []; 
             }else{
                 //나머지
                 countArr = [...countArr, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
                 숫자세기();
-                countArr = []; 
             };
         };
         let result = count == 0 ? '' : count;
@@ -199,16 +190,16 @@ const countNumber = (target) => {
     };
 };
 
-// const 영터지기 = (ty, tx, target) => {
-//     if (gameBoardArr[ty][tx - 1]  == '1'){ 열기(ty, tx - 1, target)  };
-//     if (gameBoardArr[ty][tx + 1]  == '1'){ 열기(ty, tx + 1, target) };
-//     if (gameBoardArr[ty - 1][tx]  == '1'){ 열기(ty -1, tx, target) };
-//     if (gameBoardArr[ty + 1][tx]  == '1'){ 열기(ty + 1,tx, target) };
-//     if (gameBoardArr[ty - 1][tx - 1]  == '1'){ 열기(ty - 1, tx - 1, target) };
-//     if (gameBoardArr[ty + 1][tx - 1]  == '1'){ 열기(ty + 1, tx - 1, target) };
-//     if (gameBoardArr[ty - 1][tx + 1]  == '1'){ 열기(ty - 1, tx + 1, target) };
-//     if (gameBoardArr[ty + 1][tx + 1]  == '1'){ 열기(ty + 1, tx + 1, target) };
-// }
+const 영터지기 = (ty, tx, target) => {
+    if (gameBoardArr[ty][tx - 1]  == '1'){ 열기(ty, tx - 1, target)  };
+    if (gameBoardArr[ty][tx + 1]  == '1'){ 열기(ty, tx + 1, target) };
+    if (gameBoardArr[ty - 1][tx]  == '1'){ 열기(ty -1, tx, target) };
+    if (gameBoardArr[ty + 1][tx]  == '1'){ 열기(ty + 1,tx, target) };
+    if (gameBoardArr[ty - 1][tx - 1]  == '1'){ 열기(ty - 1, tx - 1, target) };
+    if (gameBoardArr[ty + 1][tx - 1]  == '1'){ 열기(ty + 1, tx - 1, target) };
+    if (gameBoardArr[ty - 1][tx + 1]  == '1'){ 열기(ty - 1, tx + 1, target) };
+    if (gameBoardArr[ty + 1][tx + 1]  == '1'){ 열기(ty + 1, tx + 1, target) };
+}
 
 // const 열기 = (ty, tx, target) => {
 //     gameBoard.childNodes.forEach(e => {
@@ -230,13 +221,15 @@ const zeroEvent = (target) => {
 };
 
 const gameClickListener = ({ target }) => {
-    target.classList.add("click");
-    if (firstClick) {
-        firstClick = false;
-        startTimer();   
+    if(target.classList.contains('tile')){
+        target.classList.add("click");
+        if (firstClick) {
+            firstClick = false;
+            startTimer();   
+        };
+           target.childNodes[1].classList.contains('txt_mine') ? boomMine() : countNumber(target);
     };
-       target.childNodes[1].classList.contains('txt_mine') ? boomMine() : countNumber(target);
-}
+};
 
 reset.addEventListener("click",() => frameMaker());
 level.forEach(levels => {
@@ -262,3 +255,4 @@ gameBoard.addEventListener('contextmenu', (e) => {
 // 클린된거에 깃발 x
 // 터질시
 // 지뢰 찾아진곳은 빨간
+
