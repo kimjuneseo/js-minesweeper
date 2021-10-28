@@ -144,65 +144,94 @@ const cornerCheck = (ty, tx) => {
         };
 };
 
+const 상하죄우나머지처리 = (ty, tx) => {
+    let mineLen = levelChangeNum() - 1;
+    if(cornerCheck(ty, tx)){
+        if(ty === 0 ){
+            countArr = [...countArr,[ty, tx - 1], [ty, tx + 1], [ty + 1, tx], [ty + 1, tx - 1], [ty + 1, tx + 1] ];
+            countNum();
+        }else if(ty === mineLen ){
+            // 하[9][tx]
+            countArr = [...countArr, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty - 1, tx - 1], [ty - 1, tx + 1] ];
+            countNum();
+        }else if(tx === 0  && ty !== mineLen && ty !== 0){
+            //좌[ty][0]
+            countArr = [...countArr, [ty, tx + 1], [ty + 1, tx + 1], [ty - 1, tx], [ty - 1, tx + 1], [ty + 1, tx] ];
+            countNum();
+        }else if(tx === mineLen && ty != mineLen && ty != 0){
+            //우[ty][마지막 수]
+            countArr = [...countArr, [ty, tx - 1], [ty - 1, tx], [ty + 1, tx - 1], [ty + 1, tx], [ty - 1, tx - 1] ];
+            countNum();
+        }else{
+            //나머지
+            countArr = [...countArr, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
+            countNum();
+        };
+    };
+}
+
 const countListener = (target) => {
     count = 0
-    let mineLen = levelChangeNum() - 1;
+    
     let tx = parseInt(target.dataset.x); 
     let ty = parseInt(target.dataset.y);
     if(!target.childNodes[1].classList.contains('click')){
-        if(cornerCheck(ty, tx)){
-            if(ty === 0 ){
-                countArr = [...countArr,[ty, tx - 1], [ty, tx + 1], [ty + 1, tx], [ty + 1, tx - 1], [ty + 1, tx + 1] ];
-                countNum();
-            }else if(ty === mineLen ){
-                // 하[9][tx]
-                countArr = [...countArr, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty - 1, tx - 1], [ty - 1, tx + 1] ];
-                countNum();
-            }else if(tx === 0  && ty !== mineLen && ty !== 0){
-                //좌[ty][0]
-                countArr = [...countArr, [ty, tx + 1], [ty + 1, tx + 1], [ty - 1, tx], [ty - 1, tx + 1], [ty + 1, tx] ];
-                countNum();
-            }else if(tx === mineLen && ty != mineLen && ty != 0){
-                //우[ty][마지막 수]
-                countArr = [...countArr, [ty, tx - 1], [ty - 1, tx], [ty + 1, tx - 1], [ty + 1, tx], [ty - 1, tx - 1] ];
-                countNum();
-            }else{
-                //나머지
-                countArr = [...countArr, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
-                countNum();
-            };
-        };
+        상하죄우나머지처리(ty, tx)
         let result = count == 0 ? '' : count;
         target.childNodes[1].innerText = result;
         target.childNodes[1].classList.add(`txt${count}`);
         if(target.childNodes[1].classList.contains('txt0')){
             
-            영터지기(ty, tx, target)
+            영터지기(ty, tx)
         }
-    };
+    }else{
+        // 클릭된애처리();
+    }
 };
 
-let mineABC = []
-const 영터지기 = (ty, tx, target) => {
+// const 클릭된애처리 = () => {
+
+// }
+
+//일단 0인거 배열에 넣어주고 거기다가 
+const 영터지기 = (ty, tx) => {
+    let mineABC = []
     mineABC = [...mineABC, [ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
-    열기(mineABC, target);
+    let mineNe = []
+    let mineNe2 = []
     
-}
-
-const 열기 = (mineABC, target) => {
     mineABC.forEach(el => {
-        if(gameBoardArr[el[0]][el[1]] === 1){
-            gameBoard.childNodes.forEach(e => {
-                if(el[0] == e.dataset.y && el[1] == e.dataset.x){
-                    e.classList.add('click');
-                }
-                console.log();
-            })
+        let y = el[0]
+        let x = el[1]
+        if(gameBoardArr[y][x] === 1){
+            let tile = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+            tile.classList.add('click');
+            mineNe = [...mineNe, [y, x - 1], [y, x + 1], [y - 1, x], [y + 1, x], [y - 1, x - 1], [y + 1, x - 1], [y - 1, x + 1], [y + 1, x + 1]]
         }
-        countArr = [];
-    });
-
-}
+        mineABC = [];
+    });    
+    // mineNe.forEach(el => {
+    //     let y = el[0]
+    //     let x = el[1]
+    //     if(gameBoardArr[y][x] === 1){
+    //         let tile = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+    //         tile.classList.add('click');
+    //         mineNe2 = [...mineNe2, [y, x - 1], [y, x + 1], [y - 1, x], [y + 1, x], [y - 1, x - 1], [y + 1, x - 1], [y - 1, x + 1], [y + 1, x + 1]]
+    //     }
+    //     mineABC = [];
+    // });   
+    // mineNe2.forEach(el => {
+    //     let y = el[0]
+    //     let x = el[1]
+    //     if(gameBoardArr[y][x] === 1){
+    //         let tile = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+    //         tile.classList.add('click');
+    //         mineNe2 = [...mineNe2, [y, x - 1], [y, x + 1], [y - 1, x], [y + 1, x], [y - 1, x - 1], [y + 1, x - 1], [y - 1, x + 1], [y + 1, x + 1]]
+    //     }
+    //     mineABC = [];
+    // }); 
+    
+};
 
 const gameClickListener = ({ target }) => {
     if(target.classList.contains('tile')){
