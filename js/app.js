@@ -3,7 +3,7 @@ const gameBoard = document.querySelector('.gameBoard');
 const timer = document.querySelector('.timer');
 const reset = document.querySelector('.reset');
 const gameOver = document.querySelector('.gameOver');
-
+const gameWin = document.querySelector('.gameWin');
 let gameBoardArr;
 let mineArr;
 let gameLevel;
@@ -94,6 +94,7 @@ const gameBoardMaker = () => {
 
 const frameMaker = () => {
     gameOver.style.display = 'none';
+    gameWin.style.display = 'none';
     gameBoard.style.gridTemplateColumns = `repeat(${levelChangeNum()}, 1fr)`;
     gameBoard.style.pointerEvents = 'auto';
     reset.style.pointerEvents = 'auto';
@@ -111,8 +112,8 @@ const boomMine = () => {
         };
     });
     stoptime = true;
-    // gameBoard.style.pointerEvents = 'none';
-    // gameOver.style.display = 'flex';
+    gameBoard.style.pointerEvents = 'none';
+    gameOver.style.display = 'flex';
 };
 
 
@@ -144,6 +145,7 @@ const cornerCheck = (ty, tx) => {
 const countListener = (ty, tx ) => {
     count = 0;
     let tile = document.querySelector(`[data-x="${tx}"][data-y="${ty}"]`);
+    if(gameBoard)
     if(!tile.childNodes[1].classList.contains('click')){
         let mineLen = levelChangeNum() - 1;
         if(cornerCheck(ty, tx)){
@@ -168,32 +170,25 @@ const countListener = (ty, tx ) => {
         tile.childNodes[1].innerText = result;
         tile.childNodes[1].classList.add(`txt${count}`);
         if(tile.childNodes[1].classList.contains('txt0')){
-           영터지기(ty, tx);
+           zeroChin(ty, tx);
         };
      };
 };
 
-const 영터지기 = (ty, tx) => {
-    
+const zeroChin = (ty, tx) => {
     let mineABC =[[ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
-    // if(cornerCheck(ty, tx)){
         mineABC.forEach(el => {
             let y = el[0];
             let x = el[1];
-            if(gameBoardArr[y][x] === 1){
-                let tile = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
-                setTimeout(() => {
-                    tile.click();
-                    // 영터지기(ty, tx)
-                },1);
-                }
-            });    
+            if((y >= 0 && x >= 0) && (y <= levelChangeNum() - 1 && x <=levelChangeNum() -1 )){
+                if(gameBoardArr[y][x] === 1){
+                    let tile = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+                        tile.click();
+                    };
+            };
+        });    
             mineABC = [];
-            return
-        // }
 };
-
-
 
 const gameClickListener = ({ target }) => {
     let tx = parseInt(target.dataset.x); 
@@ -206,7 +201,15 @@ const gameClickListener = ({ target }) => {
         };
            target.childNodes[1].classList.contains('txt_mine') ? boomMine() : countListener(ty, tx, target);
     };
+    let mine = document.querySelectorAll('.click').length;
+    if(mine === levelChangeNum() * levelChangeNum()  - mineNumMaker()){
+        stoptime = true;
+        gameWin.style.display = 'flex';
+        gameBoard.style.pointerEvents = 'none';
+
+    };
 };
+
 
 reset.addEventListener("click",() => frameMaker());
 level.forEach(levels => {
@@ -224,12 +227,3 @@ gameBoard.addEventListener('contextmenu', (e) => {
     e.preventDefault();
     e.target.classList.toggle('flag');
 });
-
-//0인부분에서 +1씩
-// 연속파괴
-// 첫클릭 지뢰x
-// 깃발 갯수는 지뢰 개수만큼
-// 클린된거에 깃발 x
-// 터질시
-// 지뢰 찾아진곳은 빨간
-
