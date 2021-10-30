@@ -227,3 +227,5 @@ gameBoard.addEventListener('contextmenu', (e) => {
     e.preventDefault();
     e.target.classList.toggle('flag');
 });
+
+//수정
