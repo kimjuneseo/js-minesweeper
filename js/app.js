@@ -59,13 +59,14 @@ const gameArrMaker = level => {
     };
 };
 
-const mineArrMaker = () => {
+const mineArrMaker = (ty, tx) => {
     mineArr = [];
     for (let i = 0; i < mineNumMaker(); i++) {
         let x = Math.floor(Math.random() * levelChangeNum());
         let y = Math.floor(Math.random() * levelChangeNum());
         mineArr.forEach(e => {
-            if (JSON.stringify(e) === `[${x},${y}]`) {
+            console.log(JSON.stringify(e))
+            if (JSON.stringify(e) === `[${x},${y}]` && JSON.stringify(e) === `[${tx},${ty}]`){
                 i--;
             };
         });
@@ -101,7 +102,6 @@ const frameMaker = () => {
 
     resetTimer();
     gameArrMaker(levelChangeNum());
-    mineArrMaker();
     gameBoardMaker();
 };
 
@@ -183,7 +183,9 @@ const zeroChin = (ty, tx) => {
             if((y >= 0 && x >= 0) && (y <= levelChangeNum() - 1 && x <=levelChangeNum() -1 )){
                 if(gameBoardArr[y][x] === 1){
                     let tile = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+                    setInterval(() => {
                         tile.click();
+                    }, 0.0001);
                     };
             };
         });    
@@ -196,6 +198,7 @@ const gameClickListener = ({ target }) => {
     if(target.classList.contains('tile')){
         target.classList.add("click");
         if (firstClick) {
+            mineArrMaker(ty, tx);
             firstClick = false;
             startTimer();   
         };
