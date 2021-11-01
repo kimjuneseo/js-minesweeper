@@ -183,8 +183,8 @@ const zeroChin = (ty, tx) => {
             let x = el[1];
             if((y >= 0 && x >= 0) && (y <= levelChangeNum() - 1 && x <= levelChangeNum() -1 )){
                 if(gameBoardArr[y][x] === 1){
-                    let tile = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
                     setInterval(() => {
+                        let tile = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
                         tile.click();
                     }, 0.0001);
                     };
@@ -194,12 +194,12 @@ const zeroChin = (ty, tx) => {
 };
 
 const gameClickListener = ({ target }) => {
+    console.log(target);
     if(target.classList.contains('tile')){
         let tx = parseInt(target.dataset.x); 
         let ty = parseInt(target.dataset.y);
         target.classList.add("click");
         if (firstClick) {
-            target.classList.add("click");
             frameMaker();
             mineArrMaker(ty, tx);
             gameBoardMaker(ty, tx);
