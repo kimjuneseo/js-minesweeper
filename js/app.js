@@ -75,7 +75,7 @@ const mineArrMaker = (ty, tx) => {
     });
 };
 
-const gameBoardMaker = (ty, tx) => {
+const gameBoardMaker = (ty, tx, className) => {
     gameBoard.innerHTML = '';
     gameBoardArr.forEach((e, y) => {
         e.forEach((el, x) => {
@@ -90,9 +90,10 @@ const gameBoardMaker = (ty, tx) => {
         });
     });
 
-    if(ty){
+    if(ty != undefined){
     let tile = document.querySelector(`[data-x="${tx}"][data-y="${ty}"]`);
-    tile.classList.add('click');
+    console.log(tile)
+    tile.classList.add(className);
     };
 };
 
@@ -128,25 +129,24 @@ const cornerCheck = (ty, tx) => {
     if(ty === 0 && tx === 0){
         // [0][0] 
         countArr = [...countArr,[ty,tx + 1],[ty + 1,tx + 1], [ty + 1,tx]];
-        }else if(ty === 0 && tx === mineLen ){
-            // [0][9]
-            countArr = [...countArr,[ty, tx - 1], [ty + 1,tx - 1], [ty + 1,tx] ];
-        }else if(ty === mineLen && tx === 0 ){
-            // [9][0]
-            countArr = [...countArr,[ty - 1, tx], [ty - 1, tx + 1], [ty, tx + 1]];
-        }else if(tx === mineLen && ty === mineLen ){
-            //[9][9]
-            countArr = [...countArr,[ty - 1, tx], [ty - 1, tx -1], [ty, tx -1] ];
-        }else{
-            return true;
-        };
+    }else if(ty === 0 && tx === mineLen ){
+        // [0][9]
+        countArr = [...countArr,[ty, tx - 1], [ty + 1,tx - 1], [ty + 1,tx] ];
+    }else if(ty === mineLen && tx === 0 ){
+        // [9][0]
+        countArr = [...countArr,[ty - 1, tx], [ty - 1, tx + 1], [ty, tx + 1]];
+    }else if(tx === mineLen && ty === mineLen ){
+        //[9][9]
+        countArr = [...countArr,[ty - 1, tx], [ty - 1, tx -1], [ty, tx -1] ];
+    }else{
+        return true;
+    };
         countNum();
 };
 
 const countListener = (ty, tx ) => {
     count = 0;
     let tile = document.querySelector(`[data-x="${tx}"][data-y="${ty}"]`);
-    if(gameBoard)
     if(!tile.childNodes[1].classList.contains('click')){
         let mineLen = levelChangeNum() - 1;
         if(cornerCheck(ty, tx)){
@@ -171,11 +171,12 @@ const countListener = (ty, tx ) => {
         tile.childNodes[1].innerText = result;
         tile.childNodes[1].classList.add(`txt${count}`);
         if(tile.childNodes[1].classList.contains('txt0')){
+            console.log(ty, tx)
            zeroChin(ty, tx);
         };
      };
 };
-
+let tileOut
 const zeroChin = (ty, tx) => {
     let mineABC =[[ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
         mineABC.forEach(el => {
@@ -183,10 +184,10 @@ const zeroChin = (ty, tx) => {
             let x = el[1];
             if((y >= 0 && x >= 0) && (y <= levelChangeNum() - 1 && x <= levelChangeNum() -1 )){
                 if(gameBoardArr[y][x] === 1){
-                    setInterval(() => {
                         let tile = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
-                        tile.click();
-                    }, 0.0001);
+                        if(!tile.classList.contains('click')){
+                            tile.click();
+                        };
                     };
             };
         });    
@@ -194,7 +195,6 @@ const zeroChin = (ty, tx) => {
 };
 
 const gameClickListener = ({ target }) => {
-    console.log(target);
     if(target.classList.contains('tile')){
         let tx = parseInt(target.dataset.x); 
         let ty = parseInt(target.dataset.y);
@@ -202,7 +202,7 @@ const gameClickListener = ({ target }) => {
         if (firstClick) {
             frameMaker();
             mineArrMaker(ty, tx);
-            gameBoardMaker(ty, tx);
+            gameBoardMaker(ty, tx, 'click');
             firstClick = false;
             startTimer();   
         };
@@ -220,22 +220,29 @@ const gameClickListener = ({ target }) => {
 
 reset.addEventListener("click",() => {
     firstClick = true;
-    frameMaker()
+    frameMaker();
 });
 level.forEach(levels => {
     levels.addEventListener("click", e => {
         gameLevel = e.target.innerText;
-        firstClick = true;
         frameMaker();
+        gameBoardMaker();
+        firstClick = true;
+        window.clearInterval(tileOut);
     });
 });
 gameBoard.addEventListener("click", (e) => gameClickListener(e) );
 gameBoard.addEventListener('contextmenu', (e) => {
-    if (firstClick) {
-        startTimer();
-        firstClick = false;
-    };
+    let tx = parseInt(e.target.dataset.x); 
+    let ty = parseInt(e.target.dataset.y);
     e.preventDefault();
+    if (firstClick) {
+        firstClick = false;
+        frameMaker();
+        mineArrMaker();
+        gameBoardMaker(ty, tx, 'flag');
+        startTimer();
+    };
     e.target.classList.toggle('flag');
 });
 
