@@ -145,6 +145,7 @@ const cornerCheck = (ty, tx) => {
 };
 
 const countListener = (ty, tx ) => {
+   
     count = 0;
     let tile = document.querySelector(`[data-x="${tx}"][data-y="${ty}"]`);
     if(!tile.childNodes[1].classList.contains('click')){
@@ -171,12 +172,11 @@ const countListener = (ty, tx ) => {
         tile.childNodes[1].innerText = result;
         tile.childNodes[1].classList.add(`txt${count}`);
         if(tile.childNodes[1].classList.contains('txt0')){
-            console.log(ty, tx)
            zeroChin(ty, tx);
         };
      };
 };
-let tileOut
+
 const zeroChin = (ty, tx) => {
     let mineABC =[[ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
         mineABC.forEach(el => {
@@ -194,19 +194,21 @@ const zeroChin = (ty, tx) => {
             mineABC = [];
 };
 
-const gameClickListener = ({ target }) => {
-    if(target.classList.contains('tile')){
-        let tx = parseInt(target.dataset.x); 
-        let ty = parseInt(target.dataset.y);
-        target.classList.add("click");
+const gameClickListener = ( e ) => {
+    console.log(e);
+    if(e.target.classList.contains('tile') && e.target != ''){
+        let tx = parseInt(e.target.dataset.x); 
+        let ty = parseInt(e.target.dataset.y);
+        e.target.classList.add("click");
         if (firstClick) {
-            frameMaker();
-            mineArrMaker(ty, tx);
-            gameBoardMaker(ty, tx, 'click');
-            firstClick = false;
-            startTimer();   
+                frameMaker();
+                mineArrMaker(ty, tx);
+                gameBoardMaker(ty, tx, 'click');
+                firstClick = false;
+                startTimer();       
+            
         };
-           target.childNodes[1].classList.contains('txt_mine') ? boomMine() : countListener(ty, tx, target);
+           e.target.childNodes[1].classList.contains('txt_mine') ? boomMine() : countListener(ty, tx, e.target);
            let mine = document.querySelectorAll('.click').length;
            if(mine === levelChangeNum() * levelChangeNum()  - mineNumMaker()){
                stoptime = true;
@@ -216,7 +218,6 @@ const gameClickListener = ({ target }) => {
         };
     };
 };
-
 
 reset.addEventListener("click",() => {
     firstClick = true;
@@ -228,7 +229,6 @@ level.forEach(levels => {
         frameMaker();
         gameBoardMaker();
         firstClick = true;
-        window.clearInterval(tileOut);
     });
 });
 gameBoard.addEventListener("click", (e) => gameClickListener(e) );
