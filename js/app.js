@@ -245,5 +245,3 @@ gameBoard.addEventListener('contextmenu', (e) => {
     };
     e.target.classList.toggle('flag');
 });
-
-//수정
