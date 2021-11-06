@@ -13,17 +13,20 @@ let firstClick = true;
 let count;
 let countArr = [];
 const levelChangeNum = () => {
+    console.log('levelChangeNum')
     if (gameLevel === 'easy') return 10;
     if (gameLevel === 'normal') return 15;
     if (gameLevel === 'hard') return 20;
 };
 const mineNumMaker = () => {
+    console.log('mineNumMaker')
     if (gameLevel === 'easy') return 15;
     if (gameLevel === 'normal') return 30;
     if (gameLevel === 'hard') return 80;
 };
 
 const startTimer = () => {
+    console.log('startTimer')
     if (stoptime) {
         stoptime = false;
         timerCycle();
@@ -31,12 +34,14 @@ const startTimer = () => {
 };
 
 const resetTimer = () => {
+    console.log('resetTimer')
     stoptime = true;
     timer.innerHTML = '0';
     timerSec = 0;
 };
 
 const timerCycle = () => {
+    console.log('timerCycle')
     if (stoptime == false) {
         timerSec++;
         timer.innerHTML = timerSec;
@@ -49,6 +54,7 @@ const timerCycle = () => {
 };
 
 const gameArrMaker = level => {
+    console.log('gameArrMaker')
     gameBoardArr = [];
     for (let i = 0; i < level; i++) {
         gameBoardArr.push([]);
@@ -59,12 +65,15 @@ const gameArrMaker = level => {
 };
 
 const mineArrMaker = (ty, tx) => {
+    console.log('mineArrMaker')
+    console.log(ty, tx)
     mineArr = [];
     for (let i = 0; i < mineNumMaker(); i++) {
         let x = Math.floor(Math.random() * levelChangeNum());
         let y = Math.floor(Math.random() * levelChangeNum());
         mineArr.forEach(e => {
             if (JSON.stringify(e) === `[${x},${y}]` || JSON.stringify(e) === `[${tx},${ty}]`){
+                console.log("forEach")
                 i--;
             };
         });
@@ -76,6 +85,7 @@ const mineArrMaker = (ty, tx) => {
 };
 
 const gameBoardMaker = (ty, tx, className) => {
+    console.log('gameBoardMaker')
     gameBoard.innerHTML = '';
     gameBoardArr.forEach((e, y) => {
         e.forEach((el, x) => {
@@ -98,6 +108,7 @@ const gameBoardMaker = (ty, tx, className) => {
 };
 
 const frameMaker = () => {
+    console.log('frameMaker')
     gameOver.style.display = 'none';
     gameWin.style.display = 'none';
     gameBoard.style.gridTemplateColumns = `repeat(${levelChangeNum()}, 1fr)`;
@@ -109,6 +120,7 @@ const frameMaker = () => {
 };
 
 const boomMine = () => {
+    console.log('boomMine')
     gameBoard.childNodes.forEach(e => {
         if (e.childNodes[1].classList.contains('txt_mine')) {
             e.childNodes[1].classList.remove('non-click');
@@ -120,11 +132,13 @@ const boomMine = () => {
 };
 
 const countNum = () => {
+    console.log('countNum')
     countArr.forEach(e => gameBoardArr[e[0]][e[1]] === 'e' ? count++ : count);
     countArr = [];
 };
 
 const cornerCheck = (ty, tx) => {
+    console.log('cornerCheck')
     let mineLen = levelChangeNum() - 1;
     if(ty === 0 && tx === 0){
         // [0][0] 
@@ -145,6 +159,7 @@ const cornerCheck = (ty, tx) => {
 };
 
 const countListener = (ty, tx ) => {
+    console.log('countListener')
    
     count = 0;
     let tile = document.querySelector(`[data-x="${tx}"][data-y="${ty}"]`);
@@ -168,7 +183,11 @@ const countListener = (ty, tx ) => {
             };
             countNum();
         };
-        let result = count == 0 ? '' : count;
+        let result = count === 0 ? '' : count;
+        console.log(count, result, tile)
+        if(tile.childNodes[1].classList.contains('txt_mine')){
+            tile.childNodes[1].classList.remove('txt_mine');
+        }
         tile.childNodes[1].innerText = result;
         tile.childNodes[1].classList.add(`txt${count}`);
         if(tile.childNodes[1].classList.contains('txt0')){
@@ -178,6 +197,7 @@ const countListener = (ty, tx ) => {
 };
 
 const zeroChin = (ty, tx) => {
+    console.log('zeroChin')
     let mineABC =[[ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
         mineABC.forEach(el => {
             let y = el[0];
@@ -195,6 +215,7 @@ const zeroChin = (ty, tx) => {
 };
 
 const gameClickListener = ( e ) => {
+    console.log('gameClickListener')
     console.log(e);
     if(e.target.classList.contains('tile') && e.target != ''){
         let tx = parseInt(e.target.dataset.x); 
