@@ -66,6 +66,9 @@ const mineArrMaker = (ty, tx) => {
         mineArr.forEach(e => {
             if (JSON.stringify(e) === `[${x},${y}]` || JSON.stringify(e) === `[${tx},${ty}]`){
                 i--;
+                if(i === -1){
+                    mineArr = [];
+                };
             };
         });
         mineArr.push([x, y]);
@@ -73,6 +76,7 @@ const mineArrMaker = (ty, tx) => {
     mineArr.forEach((e) => {
         gameBoardArr[e[0]][e[1]] = 'e';
     });
+    console.log(`[${tx},${ty}]`, mineArr);
 };
 
 const gameBoardMaker = (ty, tx, className) => {
