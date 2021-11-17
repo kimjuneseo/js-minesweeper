@@ -76,21 +76,23 @@ const mineArrMaker = (ty, tx) => {
     mineArr.forEach((e) => {
         gameBoardArr[e[0]][e[1]] = 'e';
     });
-    console.log(`[${tx},${ty}]`, mineArr);
 };
 
 const gameBoardMaker = (ty, tx, className) => {
     gameBoard.innerHTML = '';
     gameBoardArr.forEach((e, y) => {
         e.forEach((el, x) => {
-            el === 'e' ?
+            if(el === 'e') {
                 gameBoard.innerHTML +=
                 `<div class="tile" data-x='${x}' data-y='${y}'>
-                <p class="txt_mine non-click"><img src="images/mine.svg" alt="지뢰"></p>
-            </div>` :
-                gameBoard.innerHTML += `<div class="tile" data-x='${x}' data-y='${y}'>
-            <p class></p>
-            </div>`;
+                    <p class="txt_mine non-click"><img src="images/mine.svg" alt="지뢰"></p>
+                </div>`;
+            }else{
+                gameBoard.innerHTML += `
+                <div class="tile" data-x='${x}' data-y='${y}'>
+                    <p></p>
+                </div>`;
+            }
         });
     });
 
@@ -180,7 +182,6 @@ const countListener = (ty, tx ) => {
 };
 
 const zeroChin = (ty, tx) => {
-    console.log('zeroChin')
     let mineABC =[[ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
         mineABC.forEach(el => {
             let y = el[0];
@@ -208,13 +209,17 @@ const gameClickListener = ( e ) => {
                 firstClick = false;
                 startTimer();       
         };
-           e.target.childNodes[1].classList.contains('txt_mine') ? boomMine() : countListener(ty, tx, e.target);
-           let mine = document.querySelectorAll('.click').length;
-           if(mine === levelChangeNum() * levelChangeNum()  - mineNumMaker()){
-               stoptime = true;
-               gameWin.style.display = 'flex';
-               gameBoard.style.pointerEvents = 'none';
-               
+        if(e.target.childNodes[1].classList.contains('txt_mine')){
+            boomMine()
+        }else{
+            countListener(ty, tx, e.target)
+        }
+        let mine = document.querySelectorAll('.click').length;
+        if(mine === levelChangeNum() * levelChangeNum()  - mineNumMaker()){
+            stoptime = true;
+            gameWin.style.display = 'flex';
+            gameBoard.style.pointerEvents = 'none';
+            
         };
     };
 };
