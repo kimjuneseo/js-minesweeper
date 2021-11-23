@@ -83,14 +83,17 @@ const gameBoardMaker = (ty, tx, className) => {
     gameBoard.innerHTML = '';
     gameBoardArr.forEach((e, y) => {
         e.forEach((el, x) => {
-            el === 'e' ?
-                gameBoard.innerHTML +=
+            if( el === 'e'){
+                gameBoard.innerHTML += 
                 `<div class="tile" data-x='${x}' data-y='${y}'>
-                <p class="txt_mine non-click"><img src="images/mine.svg" alt="지뢰"></p>
-            </div>` :
-                gameBoard.innerHTML += `<div class="tile" data-x='${x}' data-y='${y}'>
-            <p class></p>
-            </div>`;
+                    <p class="txt_mine non-click"><img src="images/mine.svg" alt="지뢰"></p>
+                </div>`; 
+            }else{
+                gameBoard.innerHTML += 
+                `<div class="tile" data-x='${x}' data-y='${y}'>
+                    <p class></p>
+                </div>`;
+            }
         });
     });
 
@@ -208,7 +211,8 @@ const gameClickListener = ( e ) => {
                 firstClick = false;
                 startTimer();       
         };
-           e.target.childNodes[1].classList.contains('txt_mine') ? boomMine() : countListener(ty, tx, e.target);
+        if(e.target.childNodes[1].classList.contains('txt_mine'))  boomMine()
+        else countListener(ty, tx, e.target);
            let mine = document.querySelectorAll('.click').length;
            if(mine === levelChangeNum() * levelChangeNum()  - mineNumMaker()){
                stoptime = true;
