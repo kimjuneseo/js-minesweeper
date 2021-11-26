@@ -250,5 +250,3 @@ gameBoard.addEventListener('contextmenu', (e) => {
     e.target.classList.toggle('flag');
 });
 
-
-console.log(object)
