@@ -133,16 +133,16 @@ const countNum = () => {
 const cornerCheck = (ty, tx) => {
     let mineLen = levelChangeNum() - 1;
     if(ty === 0 && tx === 0){
-        // [0][0] 
+        // [0][0]  칸
         countArr = [...countArr,[ty,tx + 1],[ty + 1,tx + 1], [ty + 1,tx]];
     }else if(ty === 0 && tx === mineLen ){
-        // [0][9]
+        // [0][9] 칸
         countArr = [...countArr,[ty, tx - 1], [ty + 1,tx - 1], [ty + 1,tx] ];
     }else if(ty === mineLen && tx === 0 ){
-        // [9][0]
-        countArr = [...countArr,[ty - 1, tx], [ty - 1, tx + 1], [ty, tx + 1]];
+        // [9][0]칸
+        countArr = [...countArr,[ty - 1, tx], [ty - 1, tx + 1], [ty, tx + 1]]; 
     }else if(tx === mineLen && ty === mineLen ){
-        //[9][9]
+        //[9][9] 칸
         countArr = [...countArr,[ty - 1, tx], [ty - 1, tx -1], [ty, tx -1] ];
     }else{
         return true;
