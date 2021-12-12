@@ -183,7 +183,7 @@ const countListener = (ty, tx ) => {
 };
 
 const zeroChin = (ty, tx) => {
-    console.log('zeroChin')
+    console.log('zeroChin');
     let mineABC =[[ty, tx - 1], [ty, tx + 1], [ty - 1, tx], [ty + 1, tx], [ty - 1, tx - 1], [ty + 1, tx - 1], [ty - 1, tx + 1], [ty + 1, tx + 1]];
         mineABC.forEach(el => {
             let y = el[0];
